@@ -42,7 +42,7 @@ This notebook performs automated detection and tracking of photoelastic disks th
 - Boundary particle identification
 
 **Inputs:**
-- Raw experimental images (polarized light images)
+- Raw experimental images
 - StarDist model for disk segmentation
 
 **Outputs:**
@@ -50,7 +50,7 @@ This notebook performs automated detection and tracking of photoelastic disks th
   - Particle positions (x, y) for each frame in pixels
   - Particle IDs and trajectories
   - Disk radii (rpx) in pixels
-  - Angular positions (theta) in degrees
+  - Angular positions (theta)
   - Boundary particle tags
 
 ### Step 2: Contact Detection
@@ -130,12 +130,4 @@ TPE_image_process_pipeline/
 ├── README.md                                # This file
 └── .gitignore                               # Git ignore rules
 ```
-
-## Models
-
-Pre-trained models required:
-- **StarDist2D model** (disk segmentation)
-- **Contact detection CNN** (contact classification)
-- **Force prediction ResNet** (initial force guess)
-
 
