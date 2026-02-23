@@ -7,6 +7,14 @@ This repository contains a three-step image analysis pipeline for tracking photo
 The analysis pipeline consists of three sequential notebooks that process experimental images to extract particle trajectories and force networks:
 
 ```mermaid
+%%{init: {
+  "theme": "default",
+  "flowchart": { "nodeSpacing": 50, "rankSpacing": 70 },
+  "themeVariables": {
+    "fontSize": "16px",
+    "padding": 12
+  }
+}}%%
 flowchart TD
     I1[Green Images] --> B[01.TPE_disk_tracking_stardist.ipynb]
     I2[UV Image] --> B
