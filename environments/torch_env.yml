@@ -1,0 +1,43 @@
+name: torch_env
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  # --- Core scientific stack ---
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - h5py
+  - tables          # PyTables for HDF5
+  - scikit-image
+  - scikit-learn
+  # --- Jupyter ---
+  - ipykernel
+  - ipywidgets
+  - jupyterlab
+  # --- Utilities ---
+  - tqdm
+  - pyyaml
+  - pip
+  - pip:
+    # --- PyTorch (CUDA 12.8) ---
+    - torch==2.8.0+cu128
+    - torchvision==0.23.0+cu128
+    - torchaudio==2.8.0+cu128
+    --extra-index-url https://download.pytorch.org/whl/cu128
+    # --- TensorFlow (needed by StarDist / CSBDeep) ---
+    - tensorflow>=2.16
+    - keras
+    - tensorboard
+    # --- Disk tracking (Notebook 01) ---
+    - stardist
+    - csbdeep
+    - trackpy
+    # --- Image processing (Notebook 02 & 03) ---
+    - opencv-python
+    # --- Misc ---
+    - scienceplots

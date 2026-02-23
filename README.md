@@ -96,27 +96,17 @@ Computes force magnitudes and directions at each contact using photoelastic imag
 
 ### Requirements
 
-This pipeline uses **3 separate conda environments** - one for each notebook. Each environment is shown to work for its specific stage:
-
-- **`env01_tracking`** - For notebook 01 (StarDist, TensorFlow, Trackpy)
-- **`env02_contact`** - For notebook 02 (OpenCV, scikit-image, TensorFlow)
-- **`env03_force`** - For notebook 03 (PyTorch, torchvision)
-
-The seperate environments are due to the fact that the notebooks are developed over a long period of time, and the dependencies for each stage evolved independently. Since these envs are just exports from my local setup that I tweaked to be functional, they are **not** the minimal workable envs and most likly contain redundancy
+This pipeline uses a single conda environment **`torch_env`** for all notebooks.
 
 ### Installation
-
-See [`environments/README.md`](environments/README.md) for detailed installation instructions and environment setup.
 
 **Quick start:**
 ```bash
 cd environments/
-conda env create -f env_01_tracking.yml
-conda env create -f env_02_contact.yml
-conda env create -f env_03_force.yml
+conda env create -f torch_env.yml
 ```
 
-**Note:** Make sure to activate the correct environment when running each notebook.
+**Note:** Select the `torch_env` kernel when running any notebook.
 
 ## Usage Outline
 
@@ -135,11 +125,8 @@ TPE_image_process_pipeline/
 ├── 01. TPE_disk_tracking_stardist.ipynb    # Disk detection & tracking
 ├── 02. TPE_contact_detect.ipynb            # Contact detection
 ├── 03. TPE_solve_force_vector_with_ResNet_guess.ipynb  # Force computation
-├── environments/                            # Conda environment files
-│   ├── README.md                           # Environment setup guide
-│   ├── env_01_tracking.yml
-│   ├── env_02_contact.yml
-│   └── env_03_force.yml
+├── environments/
+│   └── torch_env.yml                       # Single unified conda environment
 ├── README.md                                # This file
 └── .gitignore                               # Git ignore rules
 ```
@@ -150,5 +137,5 @@ Pre-trained models required:
 - **StarDist2D model** (disk segmentation)
 - **Contact detection CNN** (contact classification)
 - **Force prediction ResNet** (initial force guess)
-- **Total force VGG19 models** (separate models for D12 and D15 disks)
+
 
