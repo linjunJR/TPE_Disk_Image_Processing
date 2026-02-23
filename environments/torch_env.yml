@@ -24,11 +24,11 @@ dependencies:
   - pyyaml
   - pip
   - pip:
-    # --- PyTorch (CUDA 12.8) ---
-    - torch==2.8.0+cu128
-    - torchvision==0.23.0+cu128
-    - torchaudio==2.8.0+cu128
-    --extra-index-url https://download.pytorch.org/whl/cu128
+    # --- PyTorch (CUDA 12.6) ---
+    - --extra-index-url https://download.pytorch.org/whl/cu126
+    - torch==2.6.0+cu126
+    - torchvision==0.21.0+cu126
+    - torchaudio==2.6.0+cu126
     # --- TensorFlow (needed by StarDist / CSBDeep) ---
     - tensorflow>=2.16
     - keras
