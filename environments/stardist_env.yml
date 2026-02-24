@@ -151,4 +151,3 @@ dependencies:
       - werkzeug==3.0.6
       - widgetsnbextension==4.0.14
       - wrapt==1.17.2
-prefix: C:\Users\jcTSAI\anaconda3\envs\stardist_tf2.10
