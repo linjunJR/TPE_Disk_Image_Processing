@@ -95,19 +95,40 @@ Computes force magnitudes and directions at each contact using photoelastic imag
 
 ## Setup
 
-### Requirements
+### Environment Overview
 
-This pipeline uses a single conda environment **`torch_env`** for all notebooks.
+This pipeline uses **two separate conda environments** due to TensorFlow 2.10's native Windows GPU requirement (NumPy 1.x ABI) conflicting with PyTorch 2.x (NumPy 2.x):
+
+| Environment | Notebook | GPU backend | Key packages |
+|---|---|---|---|
+| `stardist_env` | 01 — Disk tracking | TF 2.10 + CUDA 11.2 | TensorFlow-GPU, StarDist, CSBDeep, Trackpy |
+| `torch_env` | 02 — Contact detect<br/>03 — Force solve | PyTorch + CUDA 12.6 | PyTorch 2.6+cu126, Torchvision |
+
+
 
 ### Installation
 
-**Quick start:**
+**Create both environments:**
 ```bash
 cd environments/
+conda env create -f stardist_env.yml
 conda env create -f torch_env.yml
 ```
 
-**Note:** Select the `torch_env` kernel when running any notebook.
+**Prerequisites for `stardist_env` GPU support:**
+- NVIDIA driver ≥ 450.80.02
+- CUDA 11.2 system libraries (installed automatically via `cudatoolkit=11.2`)
+
+**Prerequisites for `torch_env` GPU support:**
+- NVIDIA driver ≥ 525.0 (for CUDA 12.6)
+- PyTorch CUDA libraries are bundled in the pip wheel — no system CUDA install needed
+
+### Kernel Selection
+
+When opening a notebook in VS Code / JupyterLab, select the matching kernel:
+
+- **Notebook 01** → select `stardist_env` kernel
+- **Notebooks 02 & 03** → select `torch_env` kernel
 
 ## Usage Outline
 
@@ -127,7 +148,8 @@ TPE_image_process_pipeline/
 ├── 02. TPE_contact_detect.ipynb            # Contact detection
 ├── 03. TPE_solve_force_vector_with_ResNet_guess.ipynb  # Force computation
 ├── environments/
-│   └── torch_env.yml                       # Single unified conda environment
+│   ├── stardist_env.yml                    # Notebook 01 — TF 2.10 + StarDist (CUDA 11.2)
+│   └── torch_env.yml                       # Notebooks 02 & 03 — PyTorch 2.6 (CUDA 12.6)
 ├── README.md                                # This file
 └── .gitignore                               # Git ignore rules
 ```
