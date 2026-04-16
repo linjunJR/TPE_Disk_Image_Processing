@@ -15,7 +15,7 @@ flowchart TD
     B --> C[Trajectory .pkl File<br/> -> positions, angles, IDs]
     C --> D[02.TPE_contact_detect.ipynb]
     D --> E[Contact Bond .pkl File<br/> -> pairs, positions, angles]
-    E --> F[03.TPE_solve_force_vector_with_ResNet_guess.ipynb]
+    E --> F[03.TPE_solve_force_vector.ipynb]
     F --> G[Force .pkl File<br/> -> magnitudes & angles of contact forces]
         
     style I1 stroke:#4CAF50,stroke-width:3px
