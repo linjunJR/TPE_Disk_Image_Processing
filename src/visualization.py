@@ -4,10 +4,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-import torch
 
-from .force import synth_img_pytorch_residue
-from .utils import smooth_image, crop_circle_with_mask_float
+from .utils import crop_circle_with_mask_float
 
 __all__ = ['draw_particle_orientation', 'plot_contacts', 'build_particle_synth_output_img']
 
@@ -31,6 +29,9 @@ def build_particle_synth_output_img(f: pd.DataFrame, orig_img: np.ndarray, fsigm
     np.ndarray
         Accumulated synthesized image (`output_img`) with the same shape as orig_img.
     """
+    import torch
+    from .force import synth_img_pytorch_residue, smooth_image
+
     output_img = np.zeros_like(orig_img, dtype=np.float32)
     h, w = orig_img.shape[:2]
     is_rgb = len(orig_img.shape) == 3 and orig_img.shape[2] == 3

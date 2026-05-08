@@ -8,8 +8,6 @@ import numpy as np
 import cv2
 import os
 import pandas as pd
-import torch
-import torch.nn.functional as F
 import time
 from PIL import Image
 
@@ -24,13 +22,13 @@ __all__ = [
     'append_ij_angle_to_pdata',
     'get_disk_img',
     'iter_contact_roi_batches',
-    'gaussian_kernel',
-    'smooth_image',
     'generate_cropped_batch',
     'dog_kernel',
     'crop_tangent_square',
     'to_pil_uint8',
-    'read_image_with_retry'
+    'read_image_with_retry',
+    'compute_G2_map',
+    'subtract_gaussian_rings',
 ]
 
 def to_pil_uint8(img):
@@ -211,25 +209,6 @@ def iter_contact_roi_batches(F_bond, IMG_DIR, frame_lag=0, batch_size=256, progr
     clear_output(wait=True)
 
 
-def gaussian_kernel(kernel_size=3, sigma=1.0, device='cuda'):
-    """Create a normalized 2-D Gaussian kernel on the target torch device."""
-    x = torch.arange(kernel_size, dtype=torch.float32, device=device) - (kernel_size - 1) / 2
-    g = torch.exp(-x**2 / (2 * sigma**2))
-    g /= g.sum()
-    return g[:, None] @ g[None, :]
-
-
-def smooth_image(img, kernel_size=3, sigma=1.0):
-    """Apply a 2-D Gaussian blur to a single-channel [H, W] torch tensor."""
-    device = img.device
-    kernel = gaussian_kernel(kernel_size, sigma, device).unsqueeze(0).unsqueeze(0)
-    return F.conv2d(
-        img.unsqueeze(0).unsqueeze(0),
-        kernel,
-        padding=kernel_size // 2,
-    ).squeeze(0).squeeze(0)
-
-
 def generate_cropped_batch(f: "pd.DataFrame", img: np.ndarray) -> np.ndarray:
     """Crop, resize, blur, and normalise one image patch per particle row in *f*.
 
@@ -306,3 +285,48 @@ def read_image_with_retry(image_path, retries=4, delay_s=0.15):
             time.sleep(delay_s * attempt)
 
     return None, f'cv2.imread returned None/empty after {retries} retries'
+
+
+def compute_G2_map(img: np.ndarray) -> np.ndarray:
+    """Compute G² map from a grayscale image using gradient filters."""
+    from scipy.ndimage import convolve
+    img = img.astype(np.float32)
+    kx   = np.array([[0,  0, 0], [-1, 0, 1], [0,  0,  0]], dtype=np.float32)
+    ky   = np.array([[0, -1, 0], [ 0, 0, 0], [0,  1,  0]], dtype=np.float32)
+    kxy1 = np.array([[-1, 0, 0], [ 0, 0, 0], [0,  0,  1]], dtype=np.float32)
+    kxy2 = np.array([[ 0, 0,-1], [ 0, 0, 0], [1,  0,  0]], dtype=np.float32)
+    gx   = convolve(img, kx,   mode='reflect')
+    gy   = convolve(img, ky,   mode='reflect')
+    gxy1 = convolve(img, kxy1, mode='reflect')
+    gxy2 = convolve(img, kxy2, mode='reflect')
+    return gx**2 + gy**2 + 0.5 * (gxy1**2 + gxy2**2)
+
+
+def subtract_gaussian_rings(
+    gray: np.ndarray,
+    frame_data: "pd.DataFrame",
+    sigma_frac: float = 0.1,
+    amplitude: float = 0.7,
+) -> np.ndarray:
+    """Subtract a Gaussian ring at each particle centroid from the grayscale image.
+
+    The ring peaks at radius ``rpx`` and has width ``sigma_frac * rpx``.
+    Result is clipped to [0, inf).
+    """
+    h, w = gray.shape
+    result = gray.copy()
+    Y, X = np.mgrid[0:h, 0:w]
+    for _, row in frame_data.iterrows():
+        x = float(row['x'])
+        y = float(row['y'])
+        r = float(row['rpx']) * 0.95
+        sigma = sigma_frac * r
+        margin = int(r + 4 * sigma) + 1
+        y1, y2 = max(0, int(y) - margin), min(h, int(y) + margin + 1)
+        x1, x2 = max(0, int(x) - margin), min(w, int(x) + margin + 1)
+        Yl = Y[y1:y2, x1:x2]
+        Xl = X[y1:y2, x1:x2]
+        dist = np.sqrt((Xl - x)**2 + (Yl - y)**2)
+        ring = amplitude * np.exp(-((dist - r)**2) / (2 * sigma**2))
+        result[y1:y2, x1:x2] -= ring
+    return np.clip(result, 0, None)

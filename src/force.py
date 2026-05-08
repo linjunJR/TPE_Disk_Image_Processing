@@ -7,7 +7,27 @@ import torch
 import torch.nn as nn
 from torchvision import models
 
-from .utils import get_disk_img, smooth_image
+from .utils import get_disk_img
+
+
+def gaussian_kernel(kernel_size=3, sigma=1.0, device='cuda'):
+    """Create a normalized 2-D Gaussian kernel on the target torch device."""
+    x = torch.arange(kernel_size, dtype=torch.float32, device=device) - (kernel_size - 1) / 2
+    g = torch.exp(-x**2 / (2 * sigma**2))
+    g /= g.sum()
+    return g[:, None] @ g[None, :]
+
+
+def smooth_image(img, kernel_size=3, sigma=1.0):
+    """Apply a 2-D Gaussian blur to a single-channel [H, W] torch tensor."""
+    import torch.nn.functional as F
+    device = img.device
+    kernel = gaussian_kernel(kernel_size, sigma, device).unsqueeze(0).unsqueeze(0)
+    return F.conv2d(
+        img.unsqueeze(0).unsqueeze(0),
+        kernel,
+        padding=kernel_size // 2,
+    ).squeeze(0).squeeze(0)
 
 __all__ = [
     'get_model',
