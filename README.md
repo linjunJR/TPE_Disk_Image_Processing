@@ -18,10 +18,11 @@ The analysis pipeline consists of three sequential notebooks that process experi
 ```mermaid
 
 flowchart TD
-    I1[Green Images] --> B[01.TPE_disk_tracking_stardist.ipynb]
+    I1[Green Images] --> B[01. TPE_disk_tracking_stardist.ipynb]
     I2[UV Image] --> B
-    I3[PE Image] --> D
-    B --> C[Trajectory .pkl File<br/> -> positions, angles, IDs]
+    I3[PE Image] --> B
+    I3 --> D
+    B --> C[Trajectory .pkl File<br/> -> positions, angles, IDs, G²]
     C --> D[02.TPE_contact_detect.ipynb]
     D --> E[Contact Bond .pkl File<br/> -> pairs, positions, angles]
     E --> F[03.TPE_solve_force_vector.ipynb]
@@ -41,7 +42,7 @@ flowchart TD
 ## Pipeline Steps
 
 ### Step 1: Disk Tracking with StarDist
-**Notebook:** `01.TPE_disk_tracking_stardist.ipynb`
+**Notebook:** `01. TPE_disk_tracking_stardist.ipynb`
 
 This notebook performs automated detection and tracking of photoelastic disks throughout the experiment.
 
@@ -49,10 +50,13 @@ This notebook performs automated detection and tracking of photoelastic disks th
 - Disk detection using pre-trained StarDist2D model
 - Particle linking into trajectories using Trackpy
 - Rotation angle computation via PCA on disk orientation markers
+- Per-particle G² computation from PE images
 - Boundary particle identification
 
 **Inputs:**
-- Raw experimental images
+- Green-channel fluorescence images (`green_*.png`) for disk detection
+- UV/blue-channel images (`blue_*.png`) for orientation tracking
+- PE images (`bw_*.png`) for per-particle G² computation
 - StarDist model for disk segmentation
 
 **Outputs:**
@@ -61,6 +65,7 @@ This notebook performs automated detection and tracking of photoelastic disks th
   - Particle IDs and trajectories
   - Disk radii (rpx) in pixels
   - Angular positions (theta)
+  - Per-particle G² values
   - Boundary particle tags
 
 ### Step 2: Contact Detection
@@ -85,7 +90,7 @@ Identifies and classifies contacts between particles using a trained CNN model.
   - Classification scores
 
 ### Step 3: Force Vector Computation
-**Notebook:** `03. TPE_solve_force_vector_with_ResNet_guess.ipynb`
+**Notebook:** `03. TPE_solve_force_vector.ipynb`
 
 Computes force magnitudes and directions at each contact using photoelastic image analysis and optimization.
 
@@ -155,11 +160,10 @@ When opening a notebook in VS Code / JupyterLab, select the matching kernel:
 TPE_image_process_pipeline/
 ├── 01. TPE_disk_tracking_stardist.ipynb    # Disk detection & tracking
 ├── 02. TPE_contact_detect.ipynb            # Contact detection
-├── 03. TPE_solve_force_vector_with_ResNet_guess.ipynb  # Force computation
+├── 03. TPE_solve_force_vector.ipynb        # Force computation
 ├── environments/
 │   ├── stardist_env.yml                    # Notebook 01 — TF 2.10 + StarDist (CUDA 11.2)
 │   └── torch_env.yml                       # Notebooks 02 & 03 — PyTorch 2.6 (CUDA 12.6)
 ├── README.md                                # This file
 └── .gitignore                               # Git ignore rules
 ```
-
