@@ -18,11 +18,11 @@ The analysis pipeline consists of three sequential notebooks that process experi
 ```mermaid
 
 flowchart TD
-    I1[Green Images] --> B[01.TPE_disk_tracking_stardist.ipynb]
+    I1[Green Images] --> B[01. TPE_disk_tracking_stardist.ipynb]
     I2[UV Image] --> B
     I3[PE Image] --> B
     I3 --> D
-    B --> C[Trajectory .pkl File<br/> -> positions, angles, IDs]
+    B --> C[Trajectory .pkl File<br/> -> positions, angles, IDs, G²]
     C --> D[02.TPE_contact_detect.ipynb]
     D --> E[Contact Bond .pkl File<br/> -> pairs, positions, angles]
     E --> F[03.TPE_solve_force_vector.ipynb]
