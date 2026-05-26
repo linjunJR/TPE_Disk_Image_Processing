@@ -5,6 +5,14 @@ This pipeline automates the full analysis workflow of a 2D granular experiment u
  
 This repository contains a three-step image analysis pipeline for tracking photoelastic disks, detecting contacts, and computing force vectors in granular material experiments.
 
+<table><tr>
+<td><img src="figures\original.png" alt="Green channel images" width="500"/></td>
+<td><img src="figures\reconstructed.png" alt="Blue channel images" width="500"/></td>
+</tr></table>
+
+
+*Left: experimental image. Right: Reconstructed image from the extracted particle positions and forces.*
+
 ## Notebooks
 
 | Notebook | Open in nbviewer |
@@ -19,9 +27,9 @@ This repository contains a three-step image analysis pipeline for tracking photo
 The analysis pipeline consists of three sequential notebooks that process experimental images to extract particle trajectories and force networks:
 
 <table><tr>
-<td><img src="green.png" alt="Green channel images"/></td>
-<td><img src="PE.png" alt="Blue channel images"/></td>
-<td><img src="UV.png" alt="PE images"/></td>
+<td><img src="figures\green.png" alt="Green channel images"/></td>
+<td><img src="figures\PE.png" alt="Blue channel images"/></td>
+<td><img src="figures\UV.png" alt="PE images"/></td>
 </tr></table>
 
 ```mermaid
@@ -163,16 +171,3 @@ When opening a notebook in VS Code / JupyterLab, select the matching kernel:
 
 3. **Output files** are saved as pickle files in the specified output directory
 
-## File Structure
-
-```
-TPE_image_process_pipeline/
-├── 01. TPE_disk_tracking_stardist.ipynb    # Disk detection & tracking
-├── 02. TPE_contact_detect.ipynb            # Contact detection
-├── 03. TPE_solve_force_vector.ipynb        # Force computation
-├── environments/
-│   ├── stardist_env.yml                    # Notebook 01 — TF 2.10 + StarDist (CUDA 11.2)
-│   └── torch_env.yml                       # Notebooks 02 & 03 — PyTorch 2.6 (CUDA 12.6)
-├── README.md                                # This file
-└── .gitignore                               # Git ignore rules
-```
