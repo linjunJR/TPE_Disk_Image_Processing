@@ -241,7 +241,7 @@ def synth_img_pytorch_residue(fsigma, rm, px, f, alpha, beta, device='cuda'):
     stress_fn = STRESS_SOLVER_JIT if USE_JIT_STRESS and STRESS_SOLVER_JIT is not None else StressSolve_residue_torch
     intensity = stress_fn(
         c['xxi_flat'][c['mask']], c['xxj_flat'][c['mask']],
-        f, alpha, beta, fsigma, rm, power=10
+        f, alpha, beta, fsigma, rm, power=6
     )
     img = c['template'].clone()
     img[c['mask']] = intensity

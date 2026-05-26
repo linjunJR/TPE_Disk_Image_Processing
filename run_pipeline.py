@@ -49,16 +49,13 @@ import pandas as pd
 # If the script is run with no CLI args, these settings are used.
 # Set to a single string OR a list of strings for batch processing.
 DIRECT_RUN_IMG_DIR = [
-    "N:\PROJ_TPE\TPE_20260506A_N=262x2_7SpeedSweep_strain=0.5_5e2FramesEach\speed1",
-    "N:\PROJ_TPE\TPE_20260506A_N=262x2_7SpeedSweep_strain=0.5_5e2FramesEach\speed2",
-    "N:\PROJ_TPE\TPE_20260506A_N=262x2_7SpeedSweep_strain=0.5_5e2FramesEach\speed3",
-    "N:\PROJ_TPE\TPE_20260506A_N=262x2_7SpeedSweep_strain=0.5_5e2FramesEach\speed4",
-    "N:\PROJ_TPE\TPE_20260506A_N=262x2_7SpeedSweep_strain=0.5_5e2FramesEach\speed5",
-    "N:\PROJ_TPE\TPE_20260506A_N=262x2_7SpeedSweep_strain=0.5_5e2FramesEach\speed6",
+"N:\PROJ_TPE\TPE_20260509A01_N=262x2_e-5rps_2e-2fps_1000frames",
+"N:\PROJ_TPE\TPE_20260510A_N=262x2_6SpeedSweep_REVERSE_strain=0.5_5e2FramesEach"
 ]
+
 DIRECT_RUN_VERBOSE = 1
-DIRECT_RUN_SKIP_TRACKING = 0
-DIRECT_RUN_SKIP_CONTACT = 1
+DIRECT_RUN_SKIP_TRACKING = 1
+DIRECT_RUN_SKIP_CONTACT = 0
 
 # ── default paths and params ──────────────────────────────────────────────────────────
 DEFAULT_PKL_DIR  = r'M:\Archive\Proj_TPE\Disk_traj_files'
@@ -71,14 +68,12 @@ DIRECT_RUN_ROI = list(DEFAULT_ROI)
 DIRECT_RUN_D_TOL = DEFAULT_D_TOL
 
 # ── camera calibration matrix — UPDATE HERE when recalibrating ─────────────
-# Calibrated: 2026-05-06
+# Calibrated: 2026-05-11
 # To recalibrate: replace the 9 numbers below with the new H matrix values.
-CALIB_DATE = '2026-05-06'
-DEFAULT_CALIB_H = np.array([
-    [ 1.00709163e+00,  2.01940780e-02, -1.42063713e+00],
-    [-1.81984493e-02,  1.01468029e+00, -3.83163172e+01],
-    [-3.17462188e-06,  4.07314753e-07,  1.00000000e+00],
-])
+CALIB_DATE = '2026-05-11'
+DEFAULT_CALIB_H = np.array([[ 1.00897850e+00,  2.09385077e-02, -1.22728762e+00],
+       [-1.80085815e-02,  1.01619232e+00, -4.11885450e+01],
+       [-2.43424373e-06,  8.55305735e-07,  1.00000000e+00]])
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────
@@ -491,7 +486,7 @@ def run_contact(args, camera_align, F_linked, diag_dir, src):
             f_s = F_linked[F_linked.frame == frame_s].copy()
             fig, ax = plt.subplots(figsize=(12, 8))
             ax.imshow(src.plot_contacts(I, f_s, F_contact[F_contact.frame == frame_s],
-                                        f_s.particle[f_s.boundary].to_numpy()))
+                                        f_s.particle[f_s.boundary.to_numpy(dtype=bool)].to_numpy()))
             ax.axis('off')
             ax.set_title(f'Contacts — frame {frame_s}')
             out = os.path.join(diag_dir, f'contacts_frame{frame_s}.png')
