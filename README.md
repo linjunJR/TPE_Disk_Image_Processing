@@ -17,11 +17,10 @@ This repository contains a three-step image analysis pipeline for tracking photo
 
 | Notebook | Open in nbviewer |
 |---|---|
-| `01. TPE_disk_tracking_stardist.ipynb` | [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github/jctsaigroup/TPE-Disk-Image-Processing/blob/main/01.%20TPE_disk_tracking_stardist.ipynb) |
-| `02. TPE_contact_detect.ipynb` | [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github/jctsaigroup/TPE-Disk-Image-Processing/blob/main/02.%20TPE_contact_detect.ipynb) |
-| `03. TPE_solve_force_vector.ipynb` | [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github/jctsaigroup/TPE-Disk-Image-Processing/blob/main/03.%20TPE_solve_force_vector.ipynb) |
-| `03. TPE_solve_force_vector_CPU.ipynb` | [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github/jctsaigroup/TPE-Disk-Image-Processing/blob/main/03.%20TPE_solve_force_vector_CPU.ipynb) |
-
+| `01. TPE_disk_tracking_stardist.ipynb` | [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github.com/linjunJR/TPE_Disk_Image_Processing/blob/main/01.%20TPE_disk_tracking_stardist.ipynb) |
+| `02. TPE_contact_detect.ipynb` | [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github.com/linjunJR/TPE_Disk_Image_Processing/blob/main/02.%20TPE_contact_detect.ipynb) |
+| `03. TPE_solve_force_vector.ipynb` | [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github.com/linjunJR/TPE_Disk_Image_Processing/blob/main/03.%20TPE_solve_force_vector.ipynb) |
+| `03. TPE_solve_force_vector_CPU.ipynb` | [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github.com/linjunJR/TPE_Disk_Image_Processing/blob/main/03.%20TPE_solve_force_vector_CPU.ipynb) |
 ## Workflow Overview
 
 The analysis pipeline consists of three sequential notebooks that process experimental images to extract particle trajectories and force networks:
