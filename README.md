@@ -18,6 +18,12 @@ This repository contains a three-step image analysis pipeline for tracking photo
 
 The analysis pipeline consists of three sequential notebooks that process experimental images to extract particle trajectories and force networks:
 
+<table><tr>
+<td><img src="green.png" alt="Green channel images"/></td>
+<td><img src="PE.png" alt="Blue channel images"/></td>
+<td><img src="UV.png" alt="PE images"/></td>
+</tr></table>
+
 ```mermaid
 
 flowchart TD
@@ -25,7 +31,7 @@ flowchart TD
     I2[UV Image] --> B
     I3[PE Image] --> B
     I3 --> D
-    B --> C[Trajectory .pkl File<br/> -> positions, angles, IDs, G²]
+    B --> C[Trajectory .pkl File<br/> -> positions, angles, IDs, G^2]
     C --> D[02.TPE_contact_detect.ipynb]
     D --> E[Contact Bond .pkl File<br/> -> pairs, positions, angles]
     E --> F[03.TPE_solve_force_vector.ipynb]
