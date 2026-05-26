@@ -47,7 +47,7 @@ flowchart TD
 ### Step 1: Disk Tracking with StarDist
 **Notebook:** `01. TPE_disk_tracking_stardist.ipynb`
 
-This notebook performs automated detection and tracking of photoelastic disks throughout the experiment.
+This notebook performs automated detection and tracking of disks using StarDist 2D: https://github.com/stardist/stardist .
 
 **Key Features:**
 - Disk detection using pre-trained StarDist2D model
